@@ -1,0 +1,23 @@
+
+
+{{extend 'layout.html'}}
+<form method="POST">
+<div class="row">
+  <div class="col-md-3 offset-md-4">
+    <div class="form-group m-form__group">
+      <label for="exampleInputPassword1" class="text-center">Fecha a proyectar</label>
+      <input type="date" class="form-control m-input m-input--air m-input--pill" id="exampleInputPassword1" 
+             placeholder="Fecha" name="projection_date" value="{{=projection_date or ''}}">
+    </div>
+  </div>
+  <div class="col-md-1" style="padding-top: 7px;">
+    <br>
+    <input type="submit" class="btn m-btn--pill m-btn--air btn-outline-info m-btn m-btn--outline-2x" value="Enviar"></button>
+  </div>
+</div>
+</form>
+
+{{if projection_date != None:}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+{{=LOAD('default', 'data.load', vars=dict(projection_date=projection_date), content=content, ajax=True)}}
+{{pass}}

@@ -1,0 +1,64 @@
+{{extend 'layout.html'}}
+
+<style>
+    #submit_record__row{
+        display: none;
+    }
+</style>
+<div class="m-portlet">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-users"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    {{=T('Edit roles')}} <small>({{=user.first_name}} {{=user.last_name}})</small>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+
+            <!--begin::Form-->
+            <form class="m-form" method="POST" id="form-roles">
+                <div class="m-form__group form-group row">
+
+                    {{for group in groups:}}
+                        <label class="col-3 col-form-label">{{=T(group.role)}}</label>
+                        <div class="col-3">
+                            <span class="m-switch m-switch--info">
+                                <label>
+                                    <input type="checkbox" name="new_groups" 
+                                            value="{{=group.id}}" 
+                                            {{if str(group.id) in already_groups:}}
+                                                checked="checked"
+                                            {{pass}}
+                                            >
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    {{pass}}
+                    
+                </div>
+                <input type="hidden" value="0" name="update_roles">
+            </form>                
+        
+    </div>
+    <div class="m-portlet__foot container-fluid">
+        <a href="{{=URL('manage', 'users')}}"
+            class="btn m-btn--pill btn-secondary m-btn m-btn--custom">
+            {{=T('Back')}}
+        </a>
+        <button type="button" class="btn m-btn--pill btn-primary m-btn m-btn--custom pull-right"
+                onclick="$('#form-roles').submit();">
+            {{=T('Save')}}
+        </button>
+    </div>
+</div>
+
+
+<script>
+    $('input').addClass('m-input m-input--air m-input--pill')
+</script>

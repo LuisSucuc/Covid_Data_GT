@@ -1,0 +1,157 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" href="{{=URL('static','Metronic/datatables/datatables.bundle.min.css')}}">
+<link rel="stylesheet" href="{{=URL('static','Metronic/sweetalert2/sweetalert2.min.css')}}">
+
+
+
+<div class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="flaticon-user"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    {{=T('Users')}}
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="{{=URL('edit_user')}}" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+                            <span>
+                                <i class="la la-user-plus"></i>
+                                <span>{{=T('New user')}}</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+    <div class="m-portlet__body">
+        <table class="table table-bordered table-hover" id="crud">
+            <thead>
+            <tr>
+                <th>{{=T('Name')}}</th>
+                <th>{{=T('E-mail')}}</th>
+                <th>{{=T('Roles')}}</th>
+                <th class="text-center">{{=T('Actions')}}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {{for user in users:}}
+                <tr class="gradeA">
+                    <td>{{=user.first_name}} {{=user.last_name}}</td>
+                    <td>{{=user.email}}</td>
+                    <td>
+                        {{members = get_membership(user.id)}}
+                        
+                        {{if members:}}
+                            <ul>
+                            {{for member in members:}}
+                                <li>
+                                {{=T(member.group_id.role)}}
+                                </li>
+                            {{pass}}
+                            </ul>
+                        {{else:}}
+                            N/A
+                        {{pass}}
+
+                        
+                    </td>
+                    <td class="text-center">
+                        
+                       <!--begin: Dropdown-->
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" 
+                            m-dropdown-toggle="hover" aria-expanded="true">
+                            <a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--outline-2x m-btn--air m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle btn-sm">
+                                <i class="la la-ellipsis-h"></i>
+                            </a>
+                            <div class="m-dropdown__wrapper">
+                                <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                <div class="m-dropdown__inner">
+                                    <div class="m-dropdown__body">
+                                        <div class="m-dropdown__content">
+                                            <ul class="m-nav">
+                                                <li class="m-nav__section m-nav__section--first">
+                                                    <span class="m-nav__section-text">{{=T('Actions')}}</span>
+                                                </li>
+                                                <li class="m-nav__item">
+                                                    <a href="{{=URL('manage', 'edit_user', vars=dict(user_id=user.id))}}" class="m-nav__link">
+                                                        <i class="m-nav__link-icon la la-edit"></i>
+                                                        <span class="m-nav__link-text">{{=T('Edit')}}</span>
+                                                    </a>
+                                                </li>
+                                                <li class="m-nav__item">
+                                                    <a href="{{=URL('manage', 'edit_roles', vars=dict(user_id=user.id))}}" class="m-nav__link">
+                                                        <i class="m-nav__link-icon la la-users"></i>
+                                                        <span class="m-nav__link-text">{{=T('Edit roles')}}</span>
+                                                    </a>
+                                                </li>
+                                                <li class="m-nav__item">
+                                                    <a href="#" class="m-nav__link"
+                                                        onclick="confirmDeletion({{=user.id}})">
+                                                        <i class="m-nav__link-icon la la-trash"></i>
+                                                        <span class="m-nav__link-text">{{=T('Delete')}}</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{pass}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+{{block page_js}}
+<script src="{{=URL('static','Metronic/datatables/datatables.bundle.min.js')}}"></script>
+<script src="{{=URL('static','Metronic/sweetalert2/sweetalert2.min.js')}}"></script>
+<script src="{{=URL('static','Metronic/sweetalert2/sweetalert2.init.js')}}"></script>
+{{end page_js}}
+
+
+<script>
+function confirmDeletion(user_id){
+
+    swal({
+        title: "{{=T('Are you sure?')}}",
+        type: "warning",
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonText: "<span><i class='la la-trash'></i><span>{{=T('Yes, delete')}}</span></span>",
+        confirmButtonClass: "btn btn-danger m-btn m-btn--pill m-btn--air m-btn--icon",        
+        cancelButtonText: "<span><i class='la la-thumbs-down'></i><span>{{=T('No')}}</span></span>",
+        cancelButtonClass: "btn btn-secondary m-btn m-btn--pill m-btn--icon",
+        reverseButtons: true
+    }).then(function(result) {
+        if (result.value) {
+            var url = "{{=URL('manage', 'delete_user')}}" + "?user_id=" + user_id;
+            $(location).attr('href',url);
+        }
+    });
+
+}
+$(function() {
+
+    $('#crud').DataTable({
+        pageLength: 10,
+        responsive: true,
+        pagingType: 'full_numbers',
+        buttons: [],      
+        order: [[0, 'asc']],
+    });
+
+});
+</script>

@@ -1,0 +1,36 @@
+{{extend 'layout_login.html'}}
+<div class="m-login__head">
+    <h3 class="m-login__title">{{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}</h3>
+</div>
+<br>
+
+<div class="m-portlet m-portlet--mobile m-portlet--body-progress-">
+    <div class="m-portlet__body">
+        <div class="m-portlet__body-progress">Loading</div>
+        {{=form}}
+
+    </div>
+</div>
+<div class="text-center">
+<a class="btn btn-secondary m-btn m-btn--custom m-btn--label-info btn-sm" href="{{=URL('default', 'index')}}">{{=T('Back')}}</a>
+</div>
+        
+
+        
+
+
+
+
+{{block page_js}}
+<script>
+    jQuery("#web2py_user_form input:visible:enabled:first").focus();
+    $('input[type="submit"]').parent().removeClass('col-sm-9 col-sm-offset-3').addClass('col-sm-12 text-center')
+
+
+{{if request.args(0)=='register':}}
+    web2py_validate_entropy(jQuery('#auth_user_password'),100);
+{{elif request.args(0)=='change_password':}}
+    web2py_validate_entropy(jQuery('#no_table_new_password'),100);
+{{pass}}
+</script>
+{{end page_js}}

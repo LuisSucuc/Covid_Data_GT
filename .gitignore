@@ -1,0 +1,9 @@
+*.bak
+*.1
+*.pyc
+sessions/*
+cache/*
+errors/*
+.pythonhistory
+progress.log
+

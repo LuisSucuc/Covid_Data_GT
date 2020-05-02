@@ -1,0 +1,44 @@
+{{extend 'layout.html'}}
+
+<style>
+    #submit_record__row{
+        display: none;
+    }
+</style>
+<div class="m-portlet">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="flaticon-user"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    {{=T('Edit user') if user_id else T('New user')}}
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        {{=form}}
+
+    </div>
+    <div class="m-portlet__foot container-fluid">
+        <a href="{{=URL('manage', 'users')}}"
+            class="btn m-btn--pill btn-secondary m-btn m-btn--custom">
+            {{=T('Back')}}
+        </a>
+        <button type="button" class="btn m-btn--pill btn-primary m-btn m-btn--custom pull-right"
+                onclick="$('#submit_record__row input').click();">
+            {{if user_id:
+                =T('Edit')
+              else:
+                =T('Create')
+            pass}}
+        </button>
+    </div>
+</div>
+
+
+<script>
+    $('input').addClass('m-input m-input--air m-input--pill')
+</script>
