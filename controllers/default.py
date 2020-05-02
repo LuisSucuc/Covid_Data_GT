@@ -21,10 +21,10 @@ def index():
 
 def process_data(data):
     data = data.json()
-    del data[-1]
-    del data[-1]
-    data.append({"Country":"Guatemala","CountryCode":"GT","Province":"","City":"","CityCode":"","Lat":"15.78","Lon":"-90.23","Confirmed":557,"Deaths":16,"Recovered":62,"Active":0,"Date":"2020-04-28T00:00:00Z"})
-    data.append({"Country":"Guatemala","CountryCode":"GT","Province":"","City":"","CityCode":"","Lat":"15.78","Lon":"-90.23","Confirmed":557,"Deaths":16,"Recovered":62,"Active":0,"Date":"2020-04-29T00:00:00Z"})
+    #del data[-1]
+    #del data[-1]
+    #data.append({"Country":"Guatemala","CountryCode":"GT","Province":"","City":"","CityCode":"","Lat":"15.78","Lon":"-90.23","Confirmed":557,"Deaths":16,"Recovered":62,"Active":0,"Date":"2020-04-28T00:00:00Z"})
+    #data.append({"Country":"Guatemala","CountryCode":"GT","Province":"","City":"","CityCode":"","Lat":"15.78","Lon":"-90.23","Confirmed":557,"Deaths":16,"Recovered":62,"Active":0,"Date":"2020-04-29T00:00:00Z"})
     return data
 
 @auth.requires_login()
